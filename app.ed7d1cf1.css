@@ -1,0 +1,44 @@
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+html, body {
+    margin: 0;
+    background-color: black;
+}
+
+#canvas {
+    opacity: 0;
+}
+
+/*
+#menuScreen {
+    z-index: 10;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    background-color: red;
+    color: white;
+    font-size: 50px;
+    padding: 25px;
+    cursor: pointer;
+}
+*/
+
+#menuScreen {
+    padding: 50px;
+}
+
+.gameTitle {
+    font-size: 50px;
+    font-family: Monospace;
+    color: white !important;
+}
+
+.babylonVRicon {
+    display: none;
+}
+
+
+/*# sourceMappingURL=/app.ed7d1cf1.css.map */
