@@ -30,8 +30,8 @@ function startTimer() {
 
     var timer = $("<div>").appendTo("#timer-container");
 
-    // var time = 3 * 60;
-    var time = 5;
+    var time = 3 * 60;
+    // var time = 5;
     var minutes = Math.floor(time / 60);
     var seconds = time % 60;
 
