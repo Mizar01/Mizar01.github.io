@@ -30,7 +30,8 @@ function startTimer() {
 
     var timer = $("<div>").appendTo("#timer-container");
 
-    var time = 3 * 60;
+    // var time = 3 * 60;
+    var time = 5;
     var minutes = Math.floor(time / 60);
     var seconds = time % 60;
 
@@ -47,11 +48,17 @@ function startTimer() {
         }
 
         if (minutes <= 0 && seconds <= 0) {
-            clearInterval(timerInterval);
-            $("#timer-container").css("background-color", "black").css*("color", "white");
-        }
 
-        timer.text((minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+            clearInterval(timerInterval);
+            $("#timer-container").css("background-color", "black").css("color", "white");
+            $("#board-container").css("opacity", "0.3");
+            timer.text("Time's up!");
+
+        } else {
+
+            timer.text((minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+
+        }
 
     }, 1000);
 
