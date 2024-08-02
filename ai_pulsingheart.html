@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulsing Heart for Emiliana</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffcce6;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        #heart {
+            width: 200px;
+            height: 200px;
+            transition: transform 0.5s ease-in-out;
+        }
+        #name {
+            font-size: 2em;
+            margin-top: 20px;
+            color: #ff3366;
+            min-height: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg id="heart" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454
+            C30,20.335,16,28.261,16,28.261z" fill="#ff3366" />
+        </svg>
+        <div id="name"></div>
+    </div>
+    <script>
+        const name = 'Emiliana';
+        let currentIndex = 0;
+        const heart = document.getElementById('heart');
+        const nameElement = document.getElementById('name');
+
+        function pulsate() {
+            heart.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                heart.style.transform = 'scale(1)';
+                if (currentIndex < name.length) {
+                    nameElement.textContent += name[currentIndex];
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                    nameElement.textContent = '';
+                }
+            }, 250);
+        }
+
+        setInterval(pulsate, 1000);
+    </script>
+</body>
+</html>
