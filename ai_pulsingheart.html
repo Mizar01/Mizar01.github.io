@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulsing Heart for Emiliana</title>
+    <title>Pulsing Heart</title>
     <style>
         body, html {
             height: 100%;
@@ -11,50 +11,92 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffcce6;
+            background-color: #000000;
             font-family: Arial, sans-serif;
         }
         .container {
             text-align: center;
         }
+        #heart-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+        #sunrays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            animation: rotate 20s linear infinite;
+        }
         #heart {
-            width: 200px;
-            height: 200px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 60%;
             transition: transform 0.5s ease-in-out;
         }
-        #name {
-            font-size: 2em;
-            margin-top: 20px;
-            color: #ff3366;
-            min-height: 1.2em;
+        #letter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <svg id="heart" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454
-            C30,20.335,16,28.261,16,28.261z" fill="#ff3366" />
-        </svg>
-        <div id="name"></div>
+        <div id="heart-container">
+            <svg id="sunrays" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <g fill="#ffcc00">
+                    <path d="M50 0 L52.5 45 L47.5 45 Z" />
+                    <path d="M50 100 L52.5 55 L47.5 55 Z" />
+                    <path d="M0 50 L45 52.5 L45 47.5 Z" />
+                    <path d="M100 50 L55 52.5 L55 47.5 Z" />
+                    <path d="M14.64 14.64 L50 50 L46.46 46.46 Z" />
+                    <path d="M85.36 85.36 L50 50 L53.54 53.54 Z" />
+                    <path d="M14.64 85.36 L50 50 L46.46 53.54 Z" />
+                    <path d="M85.36 14.64 L50 50 L53.54 46.46 Z" />
+                    <path d="M25 6.7 L50 50 L47.5 45 Z" />
+                    <path d="M75 93.3 L50 50 L52.5 55 Z" />
+                    <path d="M6.7 25 L50 50 L45 47.5 Z" />
+                    <path d="M93.3 75 L50 50 L55 52.5 Z" />
+                    <path d="M6.7 75 L50 50 L45 52.5 Z" />
+                    <path d="M93.3 25 L50 50 L55 47.5 Z" />
+                    <path d="M25 93.3 L50 50 L47.5 55 Z" />
+                    <path d="M75 6.7 L50 50 L52.5 45 Z" />
+                </g>
+            </svg>
+            <svg id="heart" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454
+                C30,20.335,16,28.261,16,28.261z" fill="#ff3366" />
+            </svg>
+            <div id="letter"></div>
+        </div>
     </div>
     <script>
         const name = 'Emiliana';
         let currentIndex = 0;
         const heart = document.getElementById('heart');
-        const nameElement = document.getElementById('name');
+        const letterElement = document.getElementById('letter');
 
         function pulsate() {
-            heart.style.transform = 'scale(1.1)';
+            heart.style.transform = 'translate(-50%, -50%) scale(1.1)';
             setTimeout(() => {
-                heart.style.transform = 'scale(1)';
-                if (currentIndex < name.length) {
-                    nameElement.textContent += name[currentIndex];
-                    currentIndex++;
-                } else {
-                    currentIndex = 0;
-                    nameElement.textContent = '';
-                }
+                heart.style.transform = 'translate(-50%, -50%) scale(1)';
+                letterElement.textContent = name[currentIndex];
+                currentIndex = (currentIndex + 1) % name.length;
             }, 250);
         }
 
