@@ -1,0 +1,47 @@
+body {
+    font-family: "Lavishly Yours", Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+#inspiration-container {
+    background-color: white;
+    border: 3px solid #333;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 90%;
+    width: 90%;
+    height: auto;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+#inspiration-text {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-size: 4em;
+}
+
+#inspiration-post {
+    font-size: 3em;
+}
+
+#inspiration-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+#history-container {
+    display: none;
+    max-width: 800px;
+    margin: 20px auto;
+}
+#history-container.active {
+    display: block;
+}
