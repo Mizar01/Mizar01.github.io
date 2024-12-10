@@ -23,6 +23,9 @@ function displayInspiration(props) {
                 preElement.textContent = `${day[2]}/${day[1]}/${day[0]}`;
                 $(postElement).fadeIn(1000);
             }
+            if (props.afterEffect === 'confetti') {
+                effectConfetti();
+            }
         });
         
         return;
@@ -79,7 +82,8 @@ async function init() {
             testFilePresent = true;
         })
         .catch(error => {
-            console.error(`Error fetching ${testFile}:`, error);
+            console.log(`Error fetching ${testFile}:`, error);
+            console.log("Using the current day file");
         });
 
     if (!testFilePresent) {
@@ -93,7 +97,7 @@ async function init() {
             });
     }
 
-    eval(code);
+    if (code) eval(code);
 
     // Check for history query parameter
     const urlParams = new URLSearchParams(window.location.search);
