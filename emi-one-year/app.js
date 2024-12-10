@@ -6,7 +6,7 @@ function getCurrentDate() {
 
 function displayInspiration(props) {
 
-    const textElement = document.getElementById('inspiration-text');
+    const inspBody = document.getElementById('inspiration-body');
     const imageElement = document.getElementById('inspiration-image');
     const postElement = document.getElementById('inspiration-post');
     const preElement = document.getElementById('inspiration-pre');
@@ -15,8 +15,8 @@ function displayInspiration(props) {
 
     // TypeWriter effect
     if (props.effect === 'typewriter') {
-        textElement.innerHTML = '';
-        effectTypeWriter(textElement, props.text, () => {
+        inspBody.innerHTML = '';
+        effectTypeWriter(inspBody, props.text, () => {
             if (props.author) {
                 $(postElement).hide();
                 postElement.textContent = `${props.author}`;
@@ -33,10 +33,10 @@ function displayInspiration(props) {
 
     // Default (no effects)
     if (props.text) {
-        textElement.textContent = props.text;
-        textElement.style.display = 'block';
+        inspBody.innerHTML = props.text;
+        inspBody.style.display = 'block';
     } else {
-        textElement.style.display = 'none';
+        inspBody.style.display = 'none';
     }
 
     // Display image if exists
@@ -75,7 +75,7 @@ async function init() {
             if (!response.ok) {
                 throw new Error('File not found');
             }
-            response.text()
+            return response.text()
         })
         .then(data => {
             code = data;
@@ -120,13 +120,13 @@ async function init() {
 // }
 
 function effectTypeWriter(element, text, afterTypeFn) {
-    let speed = 300 - Math.floor(Math.random() * 250);
+    let speed = 300;
     let i = 0;
     function type() {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
             i++;
-            setTimeout(type, speed);
+            setTimeout(type, speed - Math.floor(Math.random() * speed * 0.75));
         } else {
             if (afterTypeFn) {
                 afterTypeFn();
