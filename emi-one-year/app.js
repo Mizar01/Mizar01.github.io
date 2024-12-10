@@ -68,14 +68,19 @@ async function init() {
     let testFilePresent = false;
 
     await fetch(`${testFile}?r=` + Math.random())
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('File not found');
+            }
+            response.text()
+        })
         .then(data => {
             code = data;
             testFilePresent = true;
         })
-    .catch(error => {
-        console.error(`Error fetching ${testFile}:`, error);
-    });
+        .catch(error => {
+            console.error(`Error fetching ${testFile}:`, error);
+        });
 
     if (!testFilePresent) {
         await fetch(`${dayFile}?r=` + Math.random())
