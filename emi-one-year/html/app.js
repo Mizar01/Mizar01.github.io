@@ -1,17 +1,42 @@
 var day;
 
+// Lock screen orientation to portrait
+if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('portrait')
+        .catch(error => {
+            console.log('Orientation lock failed:', error);
+        });
+}
+
 function getCurrentDate() {
     return new Date().toISOString().split('T')[0];
 }
 
+function createInspirationsContainer() {
+
+    document.getElementById("main-container").innerHTML = `
+        <div id="inspiration-container">
+            <div id="inspiration-pre"></div>
+            <div id="inspiration-body"></div>
+            <div id="inspiration-post"></div>
+        </div>
+    `;
+
+}
+
 function displayInspiration(props) {
 
+    createInspirationsContainer();
+
     const inspBody = document.getElementById('inspiration-body');
-    const imageElement = document.getElementById('inspiration-image');
     const postElement = document.getElementById('inspiration-post');
     const preElement = document.getElementById('inspiration-pre');
 
     preElement.textContent = `${day[2]}/${day[1]}/${day[0]}`;
+
+    if (props.bgEffect === 'snowflakes') {
+        createSnowFlakes();
+    }
 
     // TypeWriter effect
     if (props.effect === 'typewriter') {
@@ -37,14 +62,6 @@ function displayInspiration(props) {
         inspBody.style.display = 'block';
     } else {
         inspBody.style.display = 'none';
-    }
-
-    // Display image if exists
-    if (props.image) {
-        imageElement.src = props.image;
-        imageElement.style.display = 'block';
-    } else {
-        imageElement.style.display = 'none';
     }
 
     // Display author
