@@ -35,7 +35,9 @@ function displayInspiration(props) {
     preElement.textContent = `${day[2]}/${day[1]}/${day[0]}`;
 
     if (props.bgEffect === 'snowflakes') {
-        createSnowFlakes();
+        snowflakes();
+    } else if (props.bgEffectCommand) {
+        eval(props.bgEffectCommand);
     }
 
     // TypeWriter effect

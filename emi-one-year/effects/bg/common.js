@@ -1,4 +1,5 @@
 function createCanvas() {
+
     // Occupy the full page
     var canvas = document.createElement('canvas');
     canvas.width = getBodySize().width;
@@ -33,47 +34,28 @@ function createCanvas() {
         subtree: true,
     });
 
+    return canvas.getContext('2d');
+
 }
 
-function createSnowFlakes() {
+function createPhaserGame(create, update) {
 
-    createCanvas();
+    // Use phaser.js to create a fire effect
+    const {width, height} = getBodySize();
 
-    var canvas = document.querySelector('canvas');
-    var ctx = canvas.getContext('2d');
-    var flakes = [];
-    var maxFlakes = 400;
-
-    function createFlake() {
-        if (flakes.length >= maxFlakes) {
-            return;
+    const config = {
+        type: Phaser.AUTO,
+        width: width,
+        height: height,
+        transparent: true,
+        scene: {
+            create: create,
+            update: update
         }
-        var x = Math.random() * getBodySize().width;
-        var y = 0;
-        var size = Math.random() * 3 + 2;
-        var speed = Math.random() * 3 + 1;
-        flakes.push({x: x, y: y, size: size, speed: speed});
-    }
+    };
 
-    function drawFlakes() {
-        let {width, height} = getBodySize();
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = 'white';
-        flakes.forEach(function (flake) {
-            ctx.beginPath();
-            ctx.arc(flake.x, flake.y += flake.speed, flake.size, 0, Math.PI * 2);
-            ctx.fill();
-            if (flake.y > height) {
-                flake.y = 0;
-                flake.x = Math.random() * width;
-            }
-        });
-    }
+    const game = new Phaser.Game(config);
 
-    setInterval(function () {
-        createFlake();
-        drawFlakes();
-    }, 1000 / 40);
 }
 
 function getBodySize() {
