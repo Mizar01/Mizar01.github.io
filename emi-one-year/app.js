@@ -73,6 +73,16 @@ function displayInspiration(props) {
 
 }
 
+function displayInspiration2(props) {
+
+    if (props.bgEffect === 'snowflakes') {
+        snowflakes();
+    } else if (props.bgEffectCommand) {
+        eval(props.bgEffectCommand);
+    }
+
+}
+
 async function init() {
 
     // TODO: prevedere l'introduzione di un parametro per andare indietro e avanti nei giorni e non 
@@ -87,35 +97,10 @@ async function init() {
 
     let dayFile = `${year}/${md}.js`; 
     let testFile = `${year}/test.js`;
-    let testFilePresent = false;
 
-    await fetch(`${testFile}?r=` + Math.random())
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('File not found');
-            }
-            return response.text()
-        })
-        .then(data => {
-            code = data;
-            testFilePresent = true;
-        })
-        .catch(error => {
-            console.log(`Error fetching ${testFile}:`, error);
-            console.log("Using the current day file");
-        });
-
-    if (!testFilePresent) {
-        await fetch(`${dayFile}?r=` + Math.random())
-            .then(response => response.text())
-            .then(data => {
-                code = data;
-            })
-            .catch(error => {
-                console.error(`Error fetching ${dayFile}:`, error);
-            });
-    }
-
+    code = await getCode(testFile);
+    if (code == null) code = await getCode(dayFile);
+    if (code == null) code = await getCode('fallback.js');
     if (code) eval(code);
 
     // Check for history query parameter
@@ -123,6 +108,30 @@ async function init() {
     if (urlParams.has('history')) {
         displayHistory();
     }
+}
+
+async function getCode(filename) {
+
+    let code;
+    let present = false;
+    await fetch(`${filename}?r=` + Math.random())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('File not found');
+        }
+        return response.text()
+    })
+    .then(data => {
+        code = data;
+        present = true;
+    })
+    .catch(error => {
+        console.log(`Error fetching ${filename}:`, error);
+        console.log("Using the current day file");
+    });
+
+    return present ? code : null;
+
 }
 
 // Service Worker registration for PWA

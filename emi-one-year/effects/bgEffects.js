@@ -1,7 +1,16 @@
+var game;
+var canvasContext;
+
+function getScene() { return game.scene.scenes[0]; }
+
 function createCanvas() {
 
+    if (canvasContext !== undefined) {
+        return canvasContext;
+    }
+
     // Occupy the full page
-    var canvas = document.createElement('canvas');
+    canvas = document.createElement('canvas');
     canvas.width = getBodySize().width;
     canvas.height = getBodySize().height;
     canvas.style.top = 0;
@@ -11,7 +20,7 @@ function createCanvas() {
     function checkAndResizeCanvas() {
         const {width, height} = getBodySize();
 
-        console.log('checkAndResizeCanvas', width, height);
+        // console.log('checkAndResizeCanvas', width, height);
         
         if (canvas.width !== width || canvas.height !== height) {
             canvas.width = width;
@@ -34,11 +43,16 @@ function createCanvas() {
         subtree: true,
     });
 
-    return canvas.getContext('2d');
+    canvasContext = canvas.getContext('2d');
+    return canvasContext;
 
 }
 
-function createPhaserGame(create, update) {
+function createPhaserGame(create, update, preload) {
+
+    if (game !== undefined) {
+        return game;
+    }
 
     // Use phaser.js to create a fire effect
     const {width, height} = getBodySize();
@@ -49,12 +63,15 @@ function createPhaserGame(create, update) {
         height: height,
         transparent: true,
         scene: {
+            preload: preload || function() {},
             create: create,
-            update: update
+            update: update || function() {},
         }
     };
 
-    const game = new Phaser.Game(config);
+    game = new Phaser.Game(config);
+
+    return game;
 
 }
 
@@ -72,32 +89,7 @@ function fire(props) {
     // Create a fire emitter with only geometry shapes (no loading of images)
 
     function create() {
-
-        // Create a graphics object to generate a circle-shaped particle texture
-        const graphics = this.add.graphics();
-        graphics.fillStyle(0xffffff, 1);
-        graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
-        graphics.generateTexture('fireParticle', 10, 10); // Texture size: 10x10
-        graphics.destroy(); // Clean up the graphics object
-    
-        const { width, height } = this.game.config;
-
-        const percX = props?.percX || 50;
-        const percY = props?.percY || 50;
-        const initialScale = props?.initialScale || 4;
-
-        // Add particles using the generated texture
-        const particles = this.add.particles(width / 100 * percX, height / 100 * percY, 'fireParticle', {
-            speed: props?.speed || { min: 70, max: 180 },
-            angle: props?.angle || { min: -50, max: -130 },
-            scale: { start: initialScale, end: 0 },
-            alpha: { start: 0.38, end: 0.1 },
-            lifespan: 2800,
-            blendMode: 'ADD',
-            frequency: 20,
-            tint: [0xff4511, 0xffa511, 0xffff11] // Fire colors
-        });
-
+        createFireEffect(props);
     }
 
     function update() {
@@ -106,37 +98,72 @@ function fire(props) {
 
 }
 
+function createFireEffect(props) {
+
+    const scene = getScene();
+
+    // Create a graphics object to generate a circle-shaped particle texture
+    const graphics = scene.add.graphics();
+    graphics.fillStyle(0xffffff, 1);
+    graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
+    graphics.generateTexture('fireParticle', 10, 10); // Texture size: 10x10
+    graphics.destroy(); // Clean up the graphics object
+
+    const { width, height } = scene.game.config;
+
+    const percX = props?.percX || 50;
+    const percY = props?.percY || 50;
+    const initialScale = props?.initialScale || 4;
+
+    // Add particles using the generated texture
+    const particles = scene.add.particles(width / 100 * percX, height / 100 * percY, 'fireParticle', {
+        speed: props?.speed || { min: 70, max: 180 },
+        angle: props?.angle || { min: -50, max: -130 },
+        scale: { start: initialScale, end: 0 },
+        alpha: { start: 0.38, end: 0.1 },
+        lifespan: 2800,
+        blendMode: 'ADD',
+        frequency: 20,
+        tint: [0xff4511, 0xffa511, 0xffff11] // Fire colors
+    });
+
+}
+
+
 
 function fireworks(props) {
 
     createPhaserGame(create, update);
 
-    // Create a fire emitter with only geometry shapes (no loading of images)
-
     function create() {
-
-        // Create particles to make a firework effect
-
-        // Create a graphics object to generate a circle-shaped particle texture
-        const graphics = this.add.graphics();
-        graphics.fillStyle(0xffffff, 1);
-        graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
-        graphics.generateTexture('firework', 10, 10); // Texture size: 10x10
-        graphics.destroy(); // Clean up the graphics object
-
-        this.time.addEvent({
-            delay: 300, // Launch every 500ms
-            callback: () => {
-                const {width, height} = this.game.config;
-                const [x, y] = [Math.random() * width, Math.random() * height];
-                createFirework(x, y, this);
-            },
-            loop: true
-        });
-        
-        
+        createFireworkEffect(this);
     }
-    
+
+    function update() {}
+
+}
+
+function createFireworkEffect(scene) {
+
+    // Create particles to make a firework effect
+
+    // Create a graphics object to generate a circle-shaped particle texture
+    const graphics = this.add.graphics();
+    graphics.fillStyle(0xffffff, 1);
+    graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
+    graphics.generateTexture('firework', 10, 10); // Texture size: 10x10
+    graphics.destroy(); // Clean up the graphics object
+
+    this.time.addEvent({
+        delay: 300, // Launch every 500ms
+        callback: () => {
+            const {width, height} = this.game.config;
+            const [x, y] = [Math.random() * width, Math.random() * height];
+            createFirework(x, y, this);
+        },
+        loop: true
+    });
+
     function createFirework(x, y, scene) {
 
         scene.add.particles(x, y, 'firework', {
@@ -153,9 +180,8 @@ function fireworks(props) {
 
     }
 
-    function update() {}
-
 }
+
 
 function snowflakes() {
 
@@ -193,5 +219,94 @@ function snowflakes() {
         createFlake();
         drawFlakes();
     }, 1000 / 40);
+
+}
+
+function createText(text, textStyle) {
+
+    const scene = getScene();
+
+    const percX = textStyle?.customProps?.percX || 20;
+    const percY = textStyle?.customProps?.percY || 50;
+    const effect = textStyle?.customProps?.effect;
+
+    const { width, height } = getBodySize();
+
+    text = text.trim();
+
+    textStyle = {
+        fontFamily: textStyle?.fontFamily || "Arial",
+        fontStyle: textStyle?.fontStyle || "bold italic",
+        align: 'center',
+        fontSize: textStyle?.fontSize || '36px',
+        color: textStyle?.color || '#000000',
+        wordWrap: {
+            width: width * 0.8, // Maximum width of the text block
+            useAdvancedWrap: true // Allows advanced word wrapping
+        },
+        customProps: textStyle?.customProps,
+    };
+
+    if (effect === 'typewriter') {
+
+        const t = scene.add.text(width / 100 * percX, height / 100 * percY, '', textStyle);
+        const evt = scene.time.addEvent({
+            delay: textStyle?.customProps?.effectProps?.delay || 180, 
+            callback: () => {
+                t.text += text[0];
+                text = text.substring(1);
+                // Stop when text is empty, remove only this event
+                if (text.length === 0) {
+                    evt.remove();
+                }
+            },
+            loop: true,
+        });
+
+
+    } else {
+        scene.add.text(width / 100 * percX, height / 100 * percY, text, textStyle);
+    }
+}
+
+function createFloatingUpHearts() {
+
+    const scene = getScene();
+    const { width, height } = getBodySize();
+
+    const hearts = [];
+    const maxHearts = 40;
+    const genHeartsEvt = scene.time.addEvent({
+        delay: 1000,
+        callback: () => {
+            const heart = scene.add.text(Math.random() * width - 5, height + 30, '❤️', {
+                font: '48px Arial',
+                fill: '#ffffff'
+            });
+            heart.centerX = heart.x;
+            hearts.push(heart);
+            if (hearts.length > maxHearts) {
+                // Stops generating hearts
+                genHeartsEvt.remove();
+            }
+        },
+        loop: true,
+    })
+
+    const moveHeartsEvt = scene.time.addEvent({
+        delay: 20,
+        callback: () => {
+            hearts.forEach(heart => {
+                //console.log("heart centerX", hearts[0].centerX);
+                heart.y -= 4 * Math.random();
+                heart.x = heart.centerX + 10 * Math.sin(heart.y / 10);
+                if (heart.y < -30) {
+                    heart.y = height + 30;
+                    heart.x = heart.centerX;
+                }
+            });
+        },
+        loop: true,
+    });
 
 }
