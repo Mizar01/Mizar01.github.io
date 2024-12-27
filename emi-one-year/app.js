@@ -117,7 +117,7 @@ function createHistoryButton() {
     historyButton.id = "history-button";
     historyButton.textContent = "History";
     historyButton.style.position = "absolute";
-    historyButton.style.top = `${height - 60}px`;
+    historyButton.style.top = `${height - 120}px`;
     historyButton.style.left = `${width - 90}px`;
     historyButton.addEventListener("click", () => {
         window.location.href = `?history`;
@@ -134,7 +134,7 @@ function createBackButton() {
     backButton.id = "back-button";
     backButton.textContent = "back";
     backButton.style.position = "absolute";
-    backButton.style.top = `${height - 60}px`;
+    backButton.style.top = `${height - 120}px`;
     backButton.style.left = `${width - 90}px`;
     backButton.addEventListener("click", () => {
         window.location.href = `?`;
