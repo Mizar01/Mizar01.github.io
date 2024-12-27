@@ -73,23 +73,26 @@ function displayInspiration(props) {
 
 }
 
-function displayInspiration2(props) {
+async function init() {
 
-    if (props.bgEffect === 'snowflakes') {
-        snowflakes();
-    } else if (props.bgEffectCommand) {
-        eval(props.bgEffectCommand);
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Check for history query parameter
+    // HISTORY SCREEN
+    if (urlParams.has('history')) {
+        showHistoryDates();
+        return;
     }
 
-}
-
-async function init() {
+    // MAIN SCREEN
+    createHistoryButton(); 
 
     // TODO: prevedere l'introduzione di un parametro per andare indietro e avanti nei giorni e non 
     // solo data corrente. Se si va più avanti di oggi si deve visualizzare un messaggio di errore o 
     // eseguire un codice diverso
 
-    day = getCurrentDate().split("-");
+
+    day = urlParams.get('d')?.split("-") || getCurrentDate().split("-");
     const year = day[0];
     const md = day[1] + "-" + day[2];
 
@@ -103,12 +106,43 @@ async function init() {
     if (code == null) code = await getCode('fallback.js');
     if (code) eval(code);
 
-    // Check for history query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('history')) {
-        displayHistory();
-    }
+
+
 }
+
+function createHistoryButton() {
+
+    const { width, height } = getBodySize();
+    const historyButton = document.createElement("button");
+    historyButton.id = "history-button";
+    historyButton.textContent = "History";
+    historyButton.style.position = "absolute";
+    historyButton.style.top = `${height - 60}px`;
+    historyButton.style.left = `${width - 90}px`;
+    historyButton.addEventListener("click", () => {
+        window.location.href = `?history`;
+    });
+
+    document.body.appendChild(historyButton);
+
+}
+
+function createBackButton() {
+
+    const { width, height } = getBodySize();
+    const backButton = document.createElement("button");
+    backButton.id = "back-button";
+    backButton.textContent = "back";
+    backButton.style.position = "absolute";
+    backButton.style.top = `${height - 60}px`;
+    backButton.style.left = `${width - 90}px`;
+    backButton.addEventListener("click", () => {
+        window.location.href = `?`;
+    });
+    document.body.appendChild(backButton);
+
+}
+
 
 async function getCode(filename) {
 
@@ -164,4 +198,40 @@ function effectTypeWriter(element, text, afterTypeFn) {
     type();
 }
 
-init();
+function showHistoryDates() {
+
+    // remove main container
+    document.getElementById("main-container").remove();
+
+    createBackButton();
+    
+    const minDate = "2024-12-10";
+    const maxDate = getCurrentDate();
+
+    // Create a list of buttons with all dates from minDate to maxDate
+    let historyContainer = document.createElement("div");
+    historyContainer.id = "history-container";
+
+    let date = new Date(minDate);
+    while (date <= new Date(maxDate)) {
+        let dIso = date.toISOString().split('T')[0];
+        if (dIso.split("-")[2] == "01" || dIso == minDate) {
+            let hr = document.createElement("hr");
+            let divLabel = document.createElement("div");
+            divLabel.className = "date-label";
+            divLabel.textContent = dIso.substring(0, 7);
+            historyContainer.appendChild(hr);
+            historyContainer.appendChild(divLabel);
+        }
+        let button = document.createElement("button");
+        button.textContent = dIso;
+        button.onclick = function() {
+            window.location.href = `?d=${this.textContent}`;
+        }
+        historyContainer.appendChild(button);
+        date.setDate(date.getDate() + 1);
+    }
+
+    document.body.appendChild(historyContainer);
+
+}

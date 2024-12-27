@@ -42,3 +42,33 @@ canvas {
     position: absolute;
 }
 
+#history-button, #back-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    z-index: 500;
+}
+
+#history-container {
+    background-color: white;
+    border: 3px solid #333;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 2px;
+    max-width: 90%;
+    width: 90%;
+    height: auto;
+    /* text-align: center; */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#history-container .date-label {
+    text-align: center;
+}
+
+
