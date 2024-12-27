@@ -69,6 +69,11 @@ canvas {
 
 #history-container .date-label {
     text-align: center;
+    padding-bottom: 5px;
+}
+
+#history-container button {
+    padding: 5px;
 }
 
 

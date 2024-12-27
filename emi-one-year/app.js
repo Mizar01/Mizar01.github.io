@@ -224,9 +224,9 @@ function showHistoryDates() {
             historyContainer.appendChild(divLabel);
         }
         let button = document.createElement("button");
-        button.textContent = dIso;
+        button.textContent = dIso.split("-")[2];
         button.onclick = function() {
-            window.location.href = `?d=${this.textContent}`;
+            window.location.href = `?d=${dIso}`;
         }
         historyContainer.appendChild(button);
         date.setDate(date.getDate() + 1);
