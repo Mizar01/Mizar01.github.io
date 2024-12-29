@@ -1,4 +1,4 @@
-var day;
+const urlParams = new URLSearchParams(window.location.search);
 
 // Lock screen orientation to portrait
 if (screen.orientation && screen.orientation.lock) {
@@ -24,6 +24,10 @@ function createInspirationsContainer() {
 
 }
 
+function getDayString() {
+    return urlParams.get('d') || getCurrentDate();
+}
+
 function displayInspiration(props) {
 
     createInspirationsContainer();
@@ -31,6 +35,8 @@ function displayInspiration(props) {
     const inspBody = document.getElementById('inspiration-body');
     const postElement = document.getElementById('inspiration-post');
     const preElement = document.getElementById('inspiration-pre');
+
+    const day = getDayString().split('-');
 
     preElement.textContent = `${day[2]}/${day[1]}/${day[0]}`;
 
@@ -75,7 +81,7 @@ function displayInspiration(props) {
 
 async function init() {
 
-    const urlParams = new URLSearchParams(window.location.search);
+    const useDb = false;    
 
     // Check for history query parameter
     // HISTORY SCREEN
@@ -92,21 +98,70 @@ async function init() {
     // eseguire un codice diverso
 
 
-    day = urlParams.get('d')?.split("-") || getCurrentDate().split("-");
+    const dayString = getDayString();
+    const day = dayString.split("-");
     const year = day[0];
     const md = day[1] + "-" + day[2];
 
     let code;
+    let dbData;
 
     let dayFile = `${year}/${md}.js`; 
     let testFile = `${year}/test.js`;
 
+    // Order of precedence: test.js > test from db > day.js > day from db > fallback.js
+
+
     code = await getCode(testFile);
+    if (code == null && useDb) dbData = await fetchFromDb('test');
+    if (dbData) {
+        runDbPhaserCode(dbData);
+        return;    
+    }
     if (code == null) code = await getCode(dayFile);
+    if (code == null && useDb) dbData = await fetchFromDb(dayString);
+    
+    if (dbData) {
+        runDbPhaserCode(dbData);
+        return;    
+    }
+
     if (code == null) code = await getCode('fallback.js');
     if (code) eval(code);
 
+}
 
+async function fetchFromDb(dayString) {
+
+    let dbData;
+
+    await fetch('/api/day/' + dayString)
+        .then(response => response.json())
+        .then(data => {
+            dbData = data;
+        })
+        .catch(error => {
+            console.log('Error fetching data:', error?.message);
+            console.log('Using another strategy to get the code...');
+            return null;
+        });
+
+    return dbData;
+}
+
+function runDbPhaserCode(data) {
+
+    console.log(data);
+
+    if (data.code) {
+
+        eval(data.code);
+
+    } else {
+
+        window[data.preset_effect](data.testo);
+    
+    }
 
 }
 
@@ -160,8 +215,8 @@ async function getCode(filename) {
         present = true;
     })
     .catch(error => {
-        console.log(`Error fetching ${filename}:`, error);
-        console.log("Using the current day file");
+        console.log(`Error fetching ${filename}:`, error?.message);
+        console.log("Using another strategy to get the code...");
     });
 
     return present ? code : null;

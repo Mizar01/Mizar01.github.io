@@ -136,35 +136,37 @@ function fireworks(props) {
     createPhaserGame(create, update);
 
     function create() {
-        createFireworkEffect(this);
+        createFireworks();
     }
 
     function update() {}
 
 }
 
-function createFireworkEffect(scene) {
+function createFireworks() {
 
     // Create particles to make a firework effect
 
+    const scene = getScene();
+
     // Create a graphics object to generate a circle-shaped particle texture
-    const graphics = this.add.graphics();
+    const graphics = scene.add.graphics();
     graphics.fillStyle(0xffffff, 1);
     graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
     graphics.generateTexture('firework', 10, 10); // Texture size: 10x10
     graphics.destroy(); // Clean up the graphics object
 
-    this.time.addEvent({
+    scene.time.addEvent({
         delay: 300, // Launch every 500ms
         callback: () => {
-            const {width, height} = this.game.config;
+            const {width, height} = scene.game.config;
             const [x, y] = [Math.random() * width, Math.random() * height];
-            createFirework(x, y, this);
+            buildFirework(x, y, scene);
         },
         loop: true
     });
 
-    function createFirework(x, y, scene) {
+    function buildFirework(x, y, scene) {
 
         scene.add.particles(x, y, 'firework', {
             speed: { min: 150, max: 500 }, // Varying speed for the explosion

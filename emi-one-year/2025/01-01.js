@@ -1,7 +1,1 @@
-displayInspiration({
-    text: `
-        Buon 2025 amore mio.
-    `,
-    // effect: 'typewriter',
-    bgEffectCommand: 'fireworks()',
-});
+fireworks1("Buon 2025 amore mio.");
