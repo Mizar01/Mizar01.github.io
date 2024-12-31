@@ -77,3 +77,43 @@ function _text1(testo) {
     });
 
 }
+
+function timedTextsWithFireworks1(texts) {
+
+    createPhaserGame(_create);
+
+    function _create() {
+
+        let scene = getScene();
+
+        scene.cameras.main.setBackgroundColor("#000000");
+        
+        createFireworks();
+
+        const textProps = {
+            color: '#ffffff',
+            customProps:{
+                percX: 15, 
+                percY: 25,
+            },
+        };
+
+        let t = createText(``, textProps);
+        let idx = 0;
+        const evt = scene.time.addEvent({
+            delay: 20,
+            callback: () => {
+                t.text = texts[idx].text;
+                evt.delay = texts[idx]?.time || 1000;
+                // Stop when text is empty, remove only this event
+                if (idx === texts.length - 1) {
+                    evt.remove();
+                }
+                idx++;
+            },
+            loop: true,
+        });
+
+    }
+
+}

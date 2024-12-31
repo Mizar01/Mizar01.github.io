@@ -249,9 +249,11 @@ function createText(text, textStyle) {
         customProps: textStyle?.customProps,
     };
 
+    let t;
+
     if (effect === 'typewriter') {
 
-        const t = scene.add.text(width / 100 * percX, height / 100 * percY, '', textStyle);
+        t = scene.add.text(width / 100 * percX, height / 100 * percY, '', textStyle);
         const evt = scene.time.addEvent({
             delay: textStyle?.customProps?.effectProps?.delay || 180, 
             callback: () => {
@@ -267,8 +269,10 @@ function createText(text, textStyle) {
 
 
     } else {
-        scene.add.text(width / 100 * percX, height / 100 * percY, text, textStyle);
+        t = scene.add.text(width / 100 * percX, height / 100 * percY, text, textStyle);
     }
+
+    return t;
 }
 
 function createFloatingUpHearts() {

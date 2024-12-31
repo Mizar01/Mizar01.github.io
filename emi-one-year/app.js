@@ -107,7 +107,7 @@ async function init() {
     let dbData;
 
     let dayFile = `${year}/${md}.js`; 
-    let testFile = `${year}/test.js`;
+    let testFile = `2025/test.js`;
 
     // Order of precedence: test.js > test from db > day.js > day from db > fallback.js
 
@@ -117,6 +117,10 @@ async function init() {
     if (dbData) {
         runDbPhaserCode(dbData);
         return;    
+    }
+    console.log('dayString', dayString);
+    if (code == null && dayString > getCurrentDate()) {
+        code = await getCode('futureDateDenied.js');
     }
     if (code == null) code = await getCode(dayFile);
     if (code == null && useDb) dbData = await fetchFromDb(dayString);
