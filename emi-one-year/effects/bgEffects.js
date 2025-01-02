@@ -224,6 +224,25 @@ function snowflakes() {
 
 }
 
+// Phaser version of snowflakes
+function createSnowflakes2() {
+    
+    createPhaserGame(create, update);
+
+    function create() {
+        
+        // TODO: Add snowflakes
+
+    }
+
+    function update() {
+
+        // TODO: Update snowflakes
+
+    }
+    
+}
+
 function createText(text, textStyle) {
 
     const scene = getScene();
