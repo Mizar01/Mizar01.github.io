@@ -225,22 +225,32 @@ function snowflakes() {
 }
 
 // Phaser version of snowflakes
-function createSnowflakes2() {
+function createSnowflakes2(color) {
     
-    createPhaserGame(create, update);
+    color = color || 0xffffff;
 
-    function create() {
-        
-        // TODO: Add snowflakes
+    const scene = getScene();
 
-    }
-
-    function update() {
-
-        // TODO: Update snowflakes
-
-    }
+    const graphics = scene.add.graphics();
+    graphics.fillStyle(color, 1);
+    graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
+    graphics.generateTexture('snowflake', 10, 10); // Texture size: 10x10
+    graphics.destroy(); // Clean up the graphics object
     
+    scene.add.particles(0, 0, 'snowflake', {
+        x: { min: 0, max: 800 },      // Horizontal range
+        y: 0,                         // Starting y-position (top of the screen)
+        lifespan: 5000,               // Time the particles last (ms)
+        speedY: { min: 50, max: 200 },// Vertical speed (falling speed)
+        scale: { start: 2, end: 1 }, // Snowflakes shrink as they fall
+        alpha: { start: 1, end: 0.5 },  // Fade out as they fall
+        quantity: 2,                  // Number of particles released per interval
+        frequency: 50,                // Interval (ms) between releases
+        rotate: { min: 0, max: 360 }, // Rotation for variation
+        blendMode: 'ADD'              // Blending mode for a nice effect
+    });
+
+
 }
 
 function createText(text, textStyle) {

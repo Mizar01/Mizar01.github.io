@@ -3,7 +3,13 @@ createPhaserGame(_create,);
 function _create() {
 
     createText(`
+        L'Emiliana vien di notte
+
+        con le scarpe tutte rosse
+
+        col cappello pien di paglia
         
+        viva viva la sua boscaglia.
     `,
     {
         color: '#ffffff',
@@ -18,6 +24,6 @@ function _create() {
         fontSize: '32px',
     });
     getScene().cameras.main.setBackgroundColor("#000000");
-    snowflakes(); // TODO: replace with phaser version when ready.
+    createFloatingUpHearts();
 
 }
