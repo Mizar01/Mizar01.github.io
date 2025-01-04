@@ -304,25 +304,25 @@ function createText(text, textStyle) {
     return t;
 }
 
-function createFloatingUpHearts() {
+function createFloatingUpText(text) {
 
     const scene = getScene();
     const { width, height } = getBodySize();
 
-    const hearts = [];
-    const maxHearts = 40;
-    const genHeartsEvt = scene.time.addEvent({
+    const floatings = [];
+    const maxFloats = 40;
+    const genFloatEvt = scene.time.addEvent({
         delay: 1000,
         callback: () => {
-            const heart = scene.add.text(Math.random() * width - 5, height + 30, '❤️', {
+            const flt = scene.add.text(Math.random() * width - 5, height + 30, text, {
                 font: '48px Arial',
                 fill: '#ffffff'
             });
-            heart.centerX = heart.x;
-            hearts.push(heart);
-            if (hearts.length > maxHearts) {
-                // Stops generating hearts
-                genHeartsEvt.remove();
+            flt.centerX = flt.x;
+            floatings.push(flt);
+            if (floatings.length > maxFloats) {
+                // Stops generating floatings
+                genFloatEvt.remove();
             }
         },
         loop: true,
@@ -331,19 +331,24 @@ function createFloatingUpHearts() {
     const moveHeartsEvt = scene.time.addEvent({
         delay: 20,
         callback: () => {
-            hearts.forEach(heart => {
+            floatings.forEach(flt => {
                 //console.log("heart centerX", hearts[0].centerX);
-                heart.y -= 4 * Math.random();
-                heart.x = heart.centerX + 10 * Math.sin(heart.y / 10);
-                if (heart.y < -30) {
-                    heart.y = height + 30;
-                    heart.x = heart.centerX;
+                flt.y -= 4 * Math.random();
+                flt.x = flt.centerX + 10 * Math.sin(flt.y / 10);
+                if (flt.y < -30) {
+                    flt.y = height + 30;
+                    flt.x = flt.centerX;
                 }
             });
         },
         loop: true,
     });
+}
 
+
+function createFloatingUpHearts() {
+    createFloatingUpText('❤️');
+    
 }
 
 function createTextButton(text, {x, y, onClick}) {
