@@ -1,16 +1,15 @@
-createPhaserGame(_create,);
+createPhaserGame(_create, null, _preload);
+
+function _preload() {
+    this.load.audio('audio1', '2025/01-05.aac');
+}
 
 function _create() {
 
     createText(`
-        (non potevo registrare la canzone quindi immaginala)
-
         Un panettone alla volta,
         un panettone alla volta,
         Un panettone alla voltaaaaa,
-
-
-
         Lavanda Gastricà.
     `,
     {
@@ -27,5 +26,6 @@ function _create() {
     });
     getScene().cameras.main.setBackgroundColor("#000000");
     createFloatingUpHearts();
+    createPlayMusicButton("audio1", 50, 10);
 
 }

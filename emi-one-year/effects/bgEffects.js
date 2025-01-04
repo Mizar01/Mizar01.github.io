@@ -345,3 +345,32 @@ function createFloatingUpHearts() {
     });
 
 }
+
+function createTextButton(text, {x, y, onClick}) {
+    var button = getScene().add.text(x, y, text, {
+        color: '#ffffff',
+        backgroundColor: '#444444',
+        padding: {
+            x: 10,
+            y: 5,
+        },
+    }).setOrigin(0.5); // Centered text
+    button.setInteractive();
+    button.on('pointerdown', onClick);
+    return button;
+}
+
+function createPlayMusicButton(audio, percX, percY) {
+
+    var music = getScene().sound.add(audio);
+    var playButton = createTextButton('Play Audio', {
+        x: getBodySize().width / 100 * percX,
+        y: getBodySize().height / 100 * percY,
+        onClick: () => {
+            if (!music.isPlaying) {
+                music.play();
+            }
+        },
+    });
+
+}

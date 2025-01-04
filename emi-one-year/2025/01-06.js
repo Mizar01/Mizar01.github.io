@@ -1,4 +1,4 @@
-createPhaserGame(_create,);
+createPhaserGame(_create);
 
 function _create() {
 
@@ -23,7 +23,8 @@ function _create() {
         },
         fontSize: '32px',
     });
-    getScene().cameras.main.setBackgroundColor("#000000");
+    this.cameras.main.setBackgroundColor("#000000");
     createFloatingUpHearts();
 
 }
+
