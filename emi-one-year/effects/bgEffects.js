@@ -225,19 +225,26 @@ function snowflakes() {
 }
 
 // Phaser version of snowflakes
-function createSnowflakes2(color) {
+function createSnowflakes2(color, imageFn, imageName) {
     
     color = color || 0xffffff;
 
     const scene = getScene();
 
-    const graphics = scene.add.graphics();
-    graphics.fillStyle(color, 1);
-    graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
-    graphics.generateTexture('snowflake', 10, 10); // Texture size: 10x10
-    graphics.destroy(); // Clean up the graphics object
+    imageName = imageName || 'snowflake';
+    imageFn = imageFn || function () {
+
+        const graphics = scene.add.graphics();
+        graphics.fillStyle(color, 1);
+        graphics.fillCircle(5, 5, 5); // Center (5, 5), Radius: 5
+        graphics.generateTexture(imageName, 10, 10); // Texture size: 10x10
+        graphics.destroy(); // Clean up the graphics object
+
+    };
+
+    imageFn();
     
-    scene.add.particles(0, 0, 'snowflake', {
+    const p = scene.add.particles(0, 0, imageName, {
         x: { min: 0, max: 800 },      // Horizontal range
         y: 0,                         // Starting y-position (top of the screen)
         lifespan: 5000,               // Time the particles last (ms)
@@ -250,8 +257,25 @@ function createSnowflakes2(color) {
         blendMode: 'ADD'              // Blending mode for a nice effect
     });
 
+    p.setDepth(-1);
 
+    return p;
 }
+
+function createTextSnowFlakes(text, props) {
+    let font = props?.font || '32px Arial';
+    let fill = props?.fill || '#ffffff';
+    let name = props?.name || 'textSnowflake';
+    const tsn = createSnowflakes2(null, () => {
+        const t = getScene().add.text(-100, -100, text, {font: font, fill: fill,});
+        const renderTexture = getScene().add.renderTexture(-100, -100, t.width, t.height);
+        renderTexture.draw(t, 0, 0);
+        renderTexture.saveTexture(name);
+        t.destroy();
+    }, name);
+    return tsn;
+}
+
 
 function createText(text, textStyle) {
 

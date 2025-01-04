@@ -19,7 +19,7 @@ function _create() {
     const mole = this.add.text(width * 0.5, height * 0.5, "❤️", {font: "48px Arial"}).setOrigin(0.5);
     const badMole = this.add.text(width * 0.5, height * 0.5, "💔", {font: "48px Arial"}).setOrigin(0.5);
 
-    createText("Raggiungi 100 punti beccando i cuori", {
+    let introText = createText("Raggiungi 100 punti beccando i cuori", {
         customProps: { percX: 50, percY: 10 },
         color: "#ffffff",
         font: "32px Arial",
@@ -27,10 +27,28 @@ function _create() {
         y: margin,
     }).setOrigin(0.5);
 
+    this.time.addEvent({delay: 3000, callback: () => { introText.destroy(); }});
+
     const scoreText = this.add.text(width * 0.5, height * 0.9, `${score}`, {font: "50px Arial"}).setOrigin(0.5);
 
+    // Moving background
+    const snowflakes = createTextSnowFlakes("💙", {name: "heart"});
+
+    const snowflakeMs = 50;
+    const snowflakesTimer = this.time.addEvent({delay: snowflakeMs, callback: () => {
+        const targetHeight = height - (height / scoreToWin) * score;
+        if (snowflakes.y < targetHeight) {
+            snowflakes.y += 1;
+        } else if (snowflakes.y > targetHeight) {
+            snowflakes.y -= 1;
+        }
+    }, loop: true});
+
+    snowflakes.y = height / 2;
+    // -------------------
+
     let timerScoreDown = this.time.addEvent({delay: scoreDownMs, callback: () => {
-        score = Math.max(0, score + scoreDown);
+        updateScore(scoreDown);
         scoreText.setText(score);
         if (score === 0) {
             mole.timeToHide?.remove();
@@ -38,6 +56,7 @@ function _create() {
             timerScoreDown.remove();
             mole.destroy();
             badMole.destroy();
+            snowflakesTimer.remove();
             createText("  Hai perso!  ", {
                 customProps: {percX: 50, percY: 50}, 
                 color: "#ffffff",
@@ -68,13 +87,12 @@ function _create() {
         {x: width * 0.75, y: height * 0.75},
     ];
 
-
     hideMole();
     hideBadMole();
 
     mole.on('pointerdown', () => {
         mole.timeToHide?.remove();
-        score += scoreMole;
+        updateScore(scoreMole);
         scoreText.setText(score);
         if (score >= scoreToWin) {
             mole.timeToHide?.remove();
@@ -82,6 +100,7 @@ function _create() {
             timerScoreDown.remove();
             mole.destroy();
             badMole.destroy();
+            snowflakesTimer.remove();
             createText("  Hai vinto!  ", {
                 customProps: {percX: 50, percY: 50}, 
                 color: "#ffffff",
@@ -95,7 +114,7 @@ function _create() {
 
     badMole.on('pointerdown', () => {
         badMole.timeToHide?.remove();
-        score += scoreBadMole;
+        updateScore(scoreBadMole);
         scoreText.setText(score);
         hideBadMole();
     });
@@ -127,6 +146,11 @@ function _create() {
         base = base || 1000;
         max = max || 3000;
         return base + Math.random() * (max - base);
+    }
+
+    function updateScore(inc) {
+        score = Math.max(0, score + inc);
+        scoreText.setText(score);
     }
 
 }

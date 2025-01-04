@@ -60,6 +60,31 @@ function fireworks1(testo) {
 
 }
 
+function _textCenteredWhite1(testo) {
+
+    let t = createText(`
+        ${testo}
+    `, 
+    {
+        customProps:{
+            percX: 50, 
+            percY: 50,
+            effect: 'typewriter',
+            effectProps: {
+                delay: 50,
+            },
+        },
+        color: '#ffffff',
+        fontSize: "24px",
+    });
+
+    t.setOrigin(0.5);
+
+}
+
+
+
+
 function _text1(testo) {
 
     createText(`
@@ -98,17 +123,18 @@ function timedTextsWithFireworks1(texts) {
 
 }
 
+// Note: all texts are centered
 function createTimedTexts(texts, props) {
 
     const textProps = {
         color: props?.color || '#ffffff',
         customProps: {
-            percX: props?.customProps?.percX || 15, 
+            percX: props?.customProps?.percX || 50, 
             percY: props?.customProps?.percY || 25,
         },
     };
 
-    let t = createText(``, textProps);
+    let t = createText(``, textProps).setOrigin(0.5);
     let idx = 0;
     const evt = getScene().time.addEvent({
         delay: 20,
