@@ -1,0 +1,1 @@
+fire1("Stanotte i guardiani vudù Zangbeto ti proteggeranno e festeggieranno con te!");

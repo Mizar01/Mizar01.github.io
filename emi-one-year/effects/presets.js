@@ -13,7 +13,8 @@ function fire1(testo) {
     createPhaserGame(_create);
 
     function _create() {
-        _text1(testo);
+        getScene().cameras.main.setBackgroundColor("#000000");
+        _textCenteredWhite1(testo);
         createFireEffect({
             percX: 50,
             percY: 85,
