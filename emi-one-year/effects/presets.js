@@ -63,7 +63,7 @@ function fireworks1(testo) {
 
 function _textCenteredWhite1(testo) {
 
-    let t = createText(`
+    const t = createText(`
         ${testo}
     `, 
     {
@@ -81,6 +81,8 @@ function _textCenteredWhite1(testo) {
 
     t.setOrigin(0.5);
 
+    return t;
+
 }
 
 
@@ -88,7 +90,7 @@ function _textCenteredWhite1(testo) {
 
 function _text1(testo) {
 
-    createText(`
+    const t = createText(`
         ${testo}
     `, 
     {
@@ -101,6 +103,8 @@ function _text1(testo) {
             },
         },
     });
+
+    return t;
 
 }
 

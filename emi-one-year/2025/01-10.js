@@ -1,1 +1,1 @@
-fire1("Stanotte i guardiani vudù Zangbeto ti proteggeranno e festeggieranno con te!");
+fire1("Oggi, 10 gennaio, i guardiani vudù Zangbeto ti proteggeranno e festeggieranno con te!");
