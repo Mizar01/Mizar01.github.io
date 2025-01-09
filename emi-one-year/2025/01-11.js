@@ -24,6 +24,11 @@ const rTexts = [
     "Formaggio",
     "Incensi",
     "Pilates",
+    "Passeggiata",
+    "Curandera",
+    "Luna",
+    "Stelle",
+    "Yoni egg",
 ];
 
 createPhaserGame(_create, _update);
@@ -40,7 +45,11 @@ function _create() {
     }
 
     getScene().texts = texts;
-    console.log(getScene().texts);
+
+    createTimedTexts([
+        { text: "Oggi ti regalo solo questo effetto e mi riposo.", time: 6000, },
+        { text: "", time: 10000, },
+    ]);
 
 }
 
@@ -60,8 +69,7 @@ function _update() {
 
 function buildTextObj() {
 
-    let t = createText("", 
-    {
+    let t = createText("", {
         color: '#ffffff',
     }).setOrigin(0.5);
 

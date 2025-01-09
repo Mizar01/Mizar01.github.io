@@ -243,9 +243,11 @@ function createSnowflakes2(color, imageFn, imageName) {
     };
 
     imageFn();
+
+    const { width, height } = scene.game.config;
     
     const p = scene.add.particles(0, 0, imageName, {
-        x: { min: 0, max: 800 },      // Horizontal range
+        x: { min: 0, max: width },      // Horizontal range
         y: 0,                         // Starting y-position (top of the screen)
         lifespan: 5000,               // Time the particles last (ms)
         speedY: { min: 50, max: 200 },// Vertical speed (falling speed)
