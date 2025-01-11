@@ -25,6 +25,61 @@ function fire1(testo) {
 
 }
 
+function fireCircular1(testo, {
+    centerPercX = 50,
+    centerPercY = 50,
+    count = 8,
+    radiusPerc = 70,
+    fireScale = 4,
+    colors = ["#ff0000", "#ff6600", "#ffcc00", "#00ff00"],
+    rotSpeed = 0.05,
+} = {}) {
+    
+    createPhaserGame(_create);
+
+    function _create() {
+
+        const { width, height } = getScene().game.config;
+        const factorX = width / 100;
+        const factorY = height / 100;
+        const factor = Math.min(factorX, factorY);
+
+        setBgColor("#000000");
+
+        _textCenteredWhite1(testo);
+
+        const centerX = centerPercX * factorX;
+        const centerY = centerPercY * factorY;
+        fires = [];
+        for (let i = 0; i < count; i++) {
+            let angle = i * (Math.PI * 2) / count;
+            let p1 = createFireEffect({
+                percX: 0, percY: 0,
+                initialScale: fireScale,
+                colors: colors,
+            });
+            p1.x = centerX + Math.cos(angle) * radiusPerc * factor;
+            p1.y = centerY + Math.sin(angle) * radiusPerc * factor;
+            p1.posAngle = angle;
+            fires.push(p1);
+        }
+        getScene().time.addEvent({
+            delay: 20,
+            callback: () => {
+                for (let i = 0; i < count; i++) {
+                    let angle = fires[i].posAngle + 0.01;
+                    fires[i].x = centerX + Math.cos(angle) * radiusPerc * factor;
+                    fires[i].y = centerY + Math.sin(angle) * radiusPerc * factor;
+                    fires[i].posAngle = angle;
+                }
+            },
+            loop: true,
+        });
+
+    }
+
+}
+
 function floatingHearts1(testo) {
 
     createPhaserGame(_create);
@@ -128,30 +183,3 @@ function timedTextsWithFireworks1(texts) {
 
 }
 
-// Note: all texts are centered
-function createTimedTexts(texts, props) {
-
-    const textProps = {
-        color: props?.color || '#ffffff',
-        customProps: {
-            percX: props?.customProps?.percX || 50, 
-            percY: props?.customProps?.percY || 25,
-        },
-    };
-
-    let t = createText(``, textProps).setOrigin(0.5);
-    let idx = 0;
-    const evt = getScene().time.addEvent({
-        delay: 20,
-        callback: () => {
-            t.text = texts[idx].text;
-            evt.delay = texts[idx]?.time || 1000;
-            // Stop when text is empty, remove only this event
-            if (idx === texts.length - 1) {
-                evt.remove();
-            }
-            idx++;
-        },
-        loop: true,
-    });
-}
