@@ -140,6 +140,27 @@ function _textCenteredWhite1(testo) {
 
 }
 
+function fireWithAutoTimedText1(text, ratio = 300) {
+
+    createPhaserGame(_create);
+
+    function _create() {
+
+        let scene = getScene();
+
+        setBgColor("#000000");
+
+        createFireEffect({
+            percX: 50,
+            percY: 85,
+            initialScale: 8,
+        });
+
+        autoTimedTexts(text, ratio);
+        
+    }
+}
+
 
 
 

@@ -76,4 +76,34 @@ canvas {
     padding: 5px;
 }
 
+.history-item-button {
+    width: 50px;
+    height: 50px;
+    margin: 1px;
+}
+
+button.strufi {
+    border: 8px solid purple;
+}
+
+button.games {
+    border: 8px solid orange;
+}
+
+button.effects {
+    border: 8px solid red;
+}
+
+button.songs {
+    border: 8px solid brown;
+}
+
+button.facts {
+    border: 8px solid blue;
+}
+
+button.humour {
+    border: 8px solid yellow;
+}
+
 

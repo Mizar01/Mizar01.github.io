@@ -440,9 +440,20 @@ function createTimedTexts(texts, props) {
     });
 }
 
-function autoTimedTexts(text) {
+/**
+ * Special chars: 
+ *    *: 10 times the waitChar time
+ *    **: 20 times the waitChar time
+ * @param {*} text 
+ * @param {*} waitChar 
+ */
+function autoTimedTexts(text, waitChar=100) {
     // tokenize the text and call createTimedTexts
-    const tokens = text.split('\n');
-    const texts = tokens.map(t => ({text: t, time: t.length * 100}));
+    const tokens = text.split('\n').map(t => t.trim()).filter(t => t.length > 0);
+    const texts = tokens.map(t => {
+        const time = (t == "*") ? 10 * waitChar : (t == "**") ? 20 * waitChar : t.length * waitChar;
+        const tFinal = (t == "*" || t == "**") ? "" : t;
+        return {text: tFinal, time: time};
+    });
     createTimedTexts(texts);
 }

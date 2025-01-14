@@ -274,6 +274,7 @@ function showHistoryDates() {
     let date = new Date(minDate);
     while (date <= new Date(maxDate)) {
         let dIso = date.toISOString().split('T')[0];
+        const tags = tagsPerDay.find(t => t.date == dIso)?.tags;
         if (dIso.split("-")[2] == "01" || dIso == minDate) {
             let hr = document.createElement("hr");
             let divLabel = document.createElement("div");
@@ -283,14 +284,22 @@ function showHistoryDates() {
             historyContainer.appendChild(divLabel);
         }
         let button = document.createElement("button");
+        button.className = "history-item-button";
+        tagButton(button, tags);
         button.textContent = dIso.split("-")[2];
         button.onclick = function() {
             window.location.href = `?d=${dIso}`;
         }
         historyContainer.appendChild(button);
+
         date.setDate(date.getDate() + 1);
     }
 
     document.body.appendChild(historyContainer);
 
+}
+
+function tagButton(button, tags) {
+    if (!tags) return;
+    button.classList.add(tags[0]);
 }
