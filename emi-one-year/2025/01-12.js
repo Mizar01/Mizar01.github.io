@@ -14,6 +14,4 @@ function _create() {
          e capo dei discepoli del mistico Ramakrishna.
     `)
 
-
-
 }

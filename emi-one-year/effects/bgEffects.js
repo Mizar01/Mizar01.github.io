@@ -295,7 +295,7 @@ function createText(text, textStyle) {
 
     textStyle = {
         fontFamily: textStyle?.fontFamily || "Arial",
-        fontStyle: textStyle?.fontStyle || "bold italic",
+        fontStyle: textStyle?.fontStyle || "bold",
         align: 'center',
         fontSize: textStyle?.fontSize || '36px',
         color: textStyle?.color || '#000000',
@@ -441,18 +441,29 @@ function createTimedTexts(texts, props) {
 }
 
 /**
- * Special chars: 
+ * Special chars at the end of a line: 
  *    *: 10 times the waitChar time
  *    **: 20 times the waitChar time
  * @param {*} text 
  * @param {*} waitChar 
  */
 function autoTimedTexts(text, waitChar=100) {
+
+    function getTextAndCustomTime(t) {
+        if (t.endsWith("**")) {
+            t = t.substring(0, t.length - 2);
+            return [t, (20 + t.length) * waitChar];
+        } else if (t.endsWith("*")) {
+            t = t.substring(0, t.length - 1);
+            return [t, (10 + t.length) * waitChar];
+        } else {
+            return [t, t.length * waitChar];
+        }
+    }
     // tokenize the text and call createTimedTexts
     const tokens = text.split('\n').map(t => t.trim()).filter(t => t.length > 0);
     const texts = tokens.map(t => {
-        const time = (t == "*") ? 10 * waitChar : (t == "**") ? 20 * waitChar : t.length * waitChar;
-        const tFinal = (t == "*" || t == "**") ? "" : t;
+        const [tFinal, time] = getTextAndCustomTime(t);
         return {text: tFinal, time: time};
     });
     createTimedTexts(texts);

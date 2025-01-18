@@ -116,6 +116,18 @@ function fireworks1(testo) {
 
 }
 
+function fireworksWithAutoTimedText1(text, ratio = 300) {
+    
+    createPhaserGame(_create);
+
+    function _create() {
+        getScene().cameras.main.setBackgroundColor("#000000");
+        createFireworks();
+        autoTimedTexts(text, ratio);
+    }
+
+}
+
 function _textCenteredWhite1(testo) {
 
     const t = createText(`

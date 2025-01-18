@@ -7,7 +7,9 @@ const tagsPerDay = [
     {date: "2025-01-11", tags: ["effects"]},
     {date: "2025-01-12", tags: ["facts"]},
     {date: "2025-01-14", tags: ["strufi"]},
-    {date: "2025-01-16", tags: ["games"]},
+    {date: "2025-01-16", tags: ["effects"]},
     {date: "2025-01-17", tags: ["humour"]},
-    {date: "2025-01-18", tags: ["effects"]},
+    {date: "2025-01-18", tags: ["facts"]},
+    {date: "2025-01-20", tags: ["facts"]},
+    {date: "2025-01-24", tags: ["strufi"]},
 ]
