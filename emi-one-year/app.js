@@ -101,13 +101,14 @@ async function init() {
     const dayString = getDayString();
     const day = dayString.split("-");
     const year = day[0];
+    const m = day[1];
     const md = day[1] + "-" + day[2];
 
     let code;
     let dbData;
 
-    let dayFile = `${year}/${md}.js`; 
-    let testFile = `2025/test.js`;
+    let dayFile = `${year}/${m}/${md}.js`; 
+    let testFile = `2025/01/test.js`;
 
     // Order of precedence: test.js > test from db > day.js > day from db > fallback.js
 

@@ -106,4 +106,12 @@ button.humour {
     border: 8px solid yellow;
 }
 
+button.adv {
+    border: 8px dashed black;
+}
+
+button.wedding {
+    border: 8px dashed pink;
+}
+
 

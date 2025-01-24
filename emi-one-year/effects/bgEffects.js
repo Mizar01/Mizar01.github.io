@@ -227,7 +227,10 @@ function snowflakes() {
 }
 
 // Phaser version of snowflakes
-function createSnowflakes2(color, imageFn, imageName) {
+function createSnowflakes2(color, imageFn, imageName, {
+    frequency = 50,
+    quantity = 2,
+} = {}) {
     
     color = color || 0xffffff;
 
@@ -255,8 +258,8 @@ function createSnowflakes2(color, imageFn, imageName) {
         speedY: { min: 50, max: 200 },// Vertical speed (falling speed)
         scale: { start: 2, end: 1 }, // Snowflakes shrink as they fall
         alpha: { start: 1, end: 0.5 },  // Fade out as they fall
-        quantity: 2,                  // Number of particles released per interval
-        frequency: 50,                // Interval (ms) between releases
+        quantity: quantity || 2,      // Number of particles released per interval
+        frequency: frequency || 50,   // Interval (ms) between releases
         rotate: { min: 0, max: 360 }, // Rotation for variation
         blendMode: 'ADD'              // Blending mode for a nice effect
     });
@@ -276,7 +279,7 @@ function createTextSnowFlakes(text, props) {
         renderTexture.draw(t, 0, 0);
         renderTexture.saveTexture(name);
         t.destroy();
-    }, name);
+    }, name, props);
     return tsn;
 }
 
