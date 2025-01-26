@@ -48,7 +48,7 @@ function createCanvas() {
 
 }
 
-function createPhaserGame(create, update, preload) {
+function createPhaserGame(create, update, preload, physics) {
 
     if (game !== undefined) {
         return game;
@@ -62,6 +62,7 @@ function createPhaserGame(create, update, preload) {
         width: width,
         height: height,
         transparent: true,
+        physics: physics || {},
         scene: {
             preload: preload || function() {},
             create: create,
