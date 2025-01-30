@@ -16,5 +16,6 @@ const tagsPerDay = [
     {date: "2025-01-26", tags: ["humour"]},
     {date: "2025-01-27", tags: ["wedding"]},
     {date: "2025-01-28", tags: ["facts"]},
+    {date: "2025-01-30", tags: ["games"]},
 
 ]

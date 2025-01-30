@@ -22,8 +22,9 @@ function _create() {
    this.emojiSize = 340;
 
    // TODO: la grid non serve a niente. Basta crearne un tot
+   const arrayEmojis = Array.from(emotionsEmojis);
    for(let i = 0; i < this.emojiSize; i++) {
-      const randomEmoji = Array.from(emotionsEmojis)[Math.floor(Math.random() * emotionsEmojis.length)];
+      const randomEmoji = arrayEmojis[Math.floor(Math.random() * arrayEmojis.length)];
       const emoji = this.add.text(
          Math.random() * (width - this.boxing) + this.boxing, Math.random() * (height - this.boxing) + this.boxing,
          randomEmoji,

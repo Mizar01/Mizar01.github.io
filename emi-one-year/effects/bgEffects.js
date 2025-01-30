@@ -303,6 +303,7 @@ function createText(text, textStyle) {
         align: 'center',
         fontSize: textStyle?.fontSize || '36px',
         color: textStyle?.color || '#000000',
+        backgroundColor: textStyle?.backgroundColor || null,
         wordWrap: {
             width: width * 0.8, // Maximum width of the text block
             useAdvancedWrap: true // Allows advanced word wrapping
@@ -383,10 +384,11 @@ function createFloatingUpHearts() {
     
 }
 
-function createTextButton(text, {x, y, onClick}) {
+function createTextButton(text, {x, y, onClick, fontSize='24px'}) {
     var button = getScene().add.text(x, y, text, {
         color: '#ffffff',
         backgroundColor: '#444444',
+        fontSize: fontSize,
         padding: {
             x: 10,
             y: 5,
