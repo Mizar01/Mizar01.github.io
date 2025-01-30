@@ -106,7 +106,7 @@ function _create() {
                 enemyCounter.setText(
                     "Indesiderati: " + getScene().entities.filter((e) => e.code === "enemy").length);
             }
-            if (getScene().timeInSeconds <= 58) {
+            if (getScene().timeInSeconds <= 0) {
                 getScene().phase = "gameover";
                 createText(
                     `Hai perso. Il tuo matrimonio è rovinato`, {
