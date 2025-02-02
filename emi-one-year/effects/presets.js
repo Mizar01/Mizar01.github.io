@@ -173,8 +173,25 @@ function fireWithAutoTimedText1(text, ratio = 300) {
     }
 }
 
+function snowFlakesWithAutoTimedText1(snowFlakeText, text, {
+    ratio = 150,
+    name = "flakes",
+    font = "24px Arial",
+    fill = "#ffaa00",
+} = {}) {
+    createPhaserGame(_create, );
 
+    function _create() {
+    
+        getScene().cameras.main.setBackgroundColor("#000000");
+    
+        createTextSnowFlakes(snowFlakeText, { name: name, font: font, fill: fill });
+    
+        autoTimedTexts(text, ratio);
+    
+    }
 
+}
 
 function _text1(testo) {
 
