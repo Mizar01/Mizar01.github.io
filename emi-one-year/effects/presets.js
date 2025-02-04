@@ -178,8 +178,10 @@ function snowFlakesWithAutoTimedText1(snowFlakeText, text, {
     name = "flakes",
     font = "24px Arial",
     fill = "#ffaa00",
+    preloadFn = null,
+    afterCreate = null,
 } = {}) {
-    createPhaserGame(_create, );
+    createPhaserGame(_create, null, preloadFn);
 
     function _create() {
     
@@ -188,8 +190,12 @@ function snowFlakesWithAutoTimedText1(snowFlakeText, text, {
         createTextSnowFlakes(snowFlakeText, { name: name, font: font, fill: fill });
     
         autoTimedTexts(text, ratio);
+
+        afterCreate && afterCreate(this);
     
     }
+
+    
 
 }
 
