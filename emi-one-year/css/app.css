@@ -86,6 +86,10 @@ button.strufi {
     border: 8px solid purple;
 }
 
+button.shamana {
+    border: 8px dashed purple;
+}
+
 button.games {
     border: 8px solid orange;
 }

@@ -128,6 +128,20 @@ function fireworksWithAutoTimedText1(text, ratio = 300) {
 
 }
 
+function floatingHeartsWithAutoTimedText1(text, ratio = 150) {
+
+    createPhaserGame(_create);
+
+    function _create() {
+        setBgColor("#000000");
+        createFloatingUpHearts();
+        autoTimedTexts(text, ratio);
+    }
+
+}
+
+
+
 function _textCenteredWhite1(testo) {
 
     const t = createText(`
