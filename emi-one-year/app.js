@@ -203,7 +203,6 @@ function createBackButton() {
 
 }
 
-
 async function getCode(filename) {
 
     let code;
@@ -226,6 +225,20 @@ async function getCode(filename) {
 
     return present ? code : null;
 
+}
+
+function loadScriptAsync(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.type = 'text/javascript';
+        script.async = true;
+
+        script.onload = () => resolve(`Script loaded: ${src}`);
+        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+
+        document.head.appendChild(script);
+    });
 }
 
 // Service Worker registration for PWA
