@@ -1,7 +1,7 @@
 createPhaserGame(_create, null, _preload);
 
 function _preload() {
-    this.load.audio('audio1', '2025/01-05.aac');
+    this.load.audio('audio1', '2025/01/01-05.aac');
 }
 
 function _create() {

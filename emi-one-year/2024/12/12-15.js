@@ -9,7 +9,7 @@ displayInspiration({
         </span>
         <br>
         <audio controls>
-            <source src="2024/12-15.aac" type="audio/aac">
+            <source src="2024/12/12-15.aac" type="audio/aac">
         </audio>
         `,
 });
