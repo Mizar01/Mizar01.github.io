@@ -253,3 +253,35 @@ function timedTextsWithFireworks1(texts) {
 
 }
 
+function audioWithText1(audioPath, text) {
+
+    createPhaserGame(_create, null, _preload);
+
+    function _preload() {
+        this.load.audio('audio1', audioPath);
+    }
+
+    function _create() {
+
+        createText(`
+            ${text}
+        `,
+        {
+            color: '#ffffff',
+            customProps: {
+                percX: 15, 
+                percY: 15,
+                effect: 'typewriter',
+                effectProps: {
+                    delay: 50,
+                },
+            },
+            fontSize: '24px',
+        });
+        setBgColor("#000000");
+        createFloatingUpHearts();
+        createPlayMusicButton("audio1", 50, 10);
+
+    }
+}
+
