@@ -1,0 +1,3 @@
+fireWithAutoTimedText1(`
+    
+`, 100);

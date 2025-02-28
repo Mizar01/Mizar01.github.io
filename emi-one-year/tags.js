@@ -25,4 +25,6 @@ const tagsPerDay = [
     {date: "2025-02-18", tags: ["games"]},
     {date: "2025-02-21", tags: ["songs"]},
     {date: "2025-02-23", tags: ["strufi"]},
+    {date: "2025-02-26", tags: ["humour"]},
+    {date: "2025-03-01", tags: ["movies"]},
 ]
