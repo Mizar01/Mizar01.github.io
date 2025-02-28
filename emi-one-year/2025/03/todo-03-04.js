@@ -1,3 +1,0 @@
-fireWithAutoTimedText1(`
-    
-`, 100);

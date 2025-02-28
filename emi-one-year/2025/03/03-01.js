@@ -14,7 +14,7 @@ snowFlakesWithAutoTimedText1("🎬", `
     Era amato da tutti, ma non era abbastanza
     Voleva capire chi era veramente
     Sistemò gli occhiali tondi, abbandonò ogni velleità di curarsi la barba,
-    prese il suo clarinetto e gli spartiti e se andò nell'america attraversata da lotte tra indiani e conquistatori.
+    prese il suo clarinetto e gli spartiti e se ne andò nell'america attraversata da lotte tra indiani e conquistatori.
     Per essere accettato da una pericolosa tribù, fu mandato nel bosco, solo con le sue cose, in mezzo alle bestie feroci.
     Che cosa ne sarà di lui? Venite tutti a vedere "Dalla coi lupi" **
     *
