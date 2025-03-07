@@ -338,6 +338,10 @@ function createText(text, textStyle) {
 }
 
 function createFloatingUpText(text) {
+    createFloatingUpRandomText([text]);
+}
+
+function createFloatingUpRandomText(textArray) {
 
     const scene = getScene();
     const { width, height } = getBodySize();
@@ -347,6 +351,7 @@ function createFloatingUpText(text) {
     const genFloatEvt = scene.time.addEvent({
         delay: 1000,
         callback: () => {
+            const text = textArray[Math.floor(Math.random() * textArray.length)];
             const flt = scene.add.text(Math.random() * width - 5, height + 30, text, {
                 font: '48px Arial',
                 fill: '#ffffff'
