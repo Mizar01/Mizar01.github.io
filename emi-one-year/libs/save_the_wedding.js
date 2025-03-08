@@ -6,6 +6,7 @@ const defaultGameCfg = {
     guests: 88,
     enemies: 4,
     sadGuests: 0,
+    shits: 0,
     time: 60,
     title: "Save the Wedding",
     level: 1,
@@ -54,19 +55,21 @@ function _create() {
     this.entities = [];
     // Add random guests
     for (let i = 0; i < gameCfg.guests; i++) {
-        const e = addEntity(this, Math.random() * areaWidth + borders.x1, Math.random() * areaHeight + borders.y1, "guest");
-        this.entities.push(e);
+        addEntityInRandomPoint(this, "guest");
     }
     // Add random enemies
     for (let i = 0; i < gameCfg.enemies; i++) {
-        let e = addEntity(this, Math.random() * areaWidth + borders.x1, Math.random() * areaHeight + borders.y1, "enemy");
-        this.entities.push(e);
+        addEntityInRandomPoint(this, "enemy");        
     }
     // Add random sadGuests
     for (let i = 0; i < gameCfg.sadGuests; i++) {
-        const e = addEntity(this, Math.random() * areaWidth + borders.x1, Math.random() * areaHeight + borders.y1, "sadGuest");
-        this.entities.push(e);
+        addEntityInRandomPoint(this, "sadGuest");
     }
+    // Add random shits
+    for (let i = 0; i < gameCfg.shits; i++) {
+        addEntityInRandomPoint(this, "shit");
+    }
+
     // Debug on player position
     // this.time.addEvent({
     //     delay: 1000,
@@ -134,7 +137,18 @@ function _create() {
         loop: true
     });
 
+}
 
+function addEntityInRandomPoint(s, code) {
+    const {rx, ry} = randomPoint(s.borders.x1, s.borders.y1, s.borders.x2, s.borders.y2);
+    const e = addEntity(getScene(), rx, ry, code);
+}
+
+function randomPoint(x1, y1, x2, y2) {
+    return {
+        rx: Math.random() * (x2 - x1) + x1,
+        ry: Math.random() * (y2 - y1) + y1
+    };
 }
 
 function createDashboard(s) {
@@ -238,43 +252,60 @@ function updateEntities(s) {
     const maxX = s.borders.x2;
     const maxY = s.borders.y2;
     s.entities.forEach((e) => {
-        const outOfBounds = e.x < minX || e.x > maxX || e.y < minY || e.y > maxY;
-        const changeDir = Math.random() < 0.01;
-        if (changeDir) {
-           e.dir = Math.random() * Math.PI * 2;
-        }
-        if (outOfBounds) {
-           e.dir += Math.PI;
-        }
-        let newX = e.x + Math.cos(e.dir) * e.speed;
-        let newY = e.y + Math.sin(e.dir) * e.speed;
-        if (newX < minX) newX = minX;
-        if (newX > maxX) newX = maxX;
-        if (newY < minY) newY = minY;
-        if (newY > maxY) newY = maxY;
-        e.x = newX;
-        e.y = newY;
 
-        if (e.code === "enemy") {
-            if (Math.abs(e.x - s.player.x) < 20 && Math.abs(e.y - s.player.y) < 20) {
+        if (["guest", "enemy", "sadGuest"].includes(e.code)) {
+            const outOfBounds = e.x < minX || e.x > maxX || e.y < minY || e.y > maxY;
+            const changeDir = Math.random() < 0.01;
+            if (changeDir) {
+            e.dir = Math.random() * Math.PI * 2;
+            }
+            if (outOfBounds) {
+            e.dir += Math.PI;
+            }
+            let newX = e.x + Math.cos(e.dir) * e.speed;
+            let newY = e.y + Math.sin(e.dir) * e.speed;
+            if (newX < minX) newX = minX;
+            if (newX > maxX) newX = maxX;
+            if (newY < minY) newY = minY;
+            if (newY > maxY) newY = maxY;
+            e.x = newX;
+            e.y = newY;
+
+            if (e.code === "enemy") {
+                if (nearPlayer(e)) {
+                    e.destroy();
+                    e.isDestroyed = true;
+                    createExplosion(s, e.x, e.y);
+                    getScene().timeInSeconds += 10;
+                }
+            }
+
+            if (e.code === "sadGuest") {
+                if (nearPlayer(e)) {
+                    e.text = "😀";
+                    e.code = "guest";
+                    getScene().timeInSeconds += 10;
+                }
+            }
+        } else if (e.code === "shit") {
+            if (nearPlayer(e, 40)) {
+                e.timedEvents.forEach((evt) => evt.remove());
                 e.destroy();
                 e.isDestroyed = true;
                 createExplosion(s, e.x, e.y);
-                getScene().timeInSeconds += 10;
-            }
-        }
-
-        if (e.code === "sadGuest") {
-            if (Math.abs(e.x - s.player.x) < 20 && Math.abs(e.y - s.player.y) < 20) {
-                e.text = "😀";
-                e.code = "guest";
-                getScene().timeInSeconds += 10;
+                getScene().timeInSeconds -= 30;
             }
         }
 
      });
      s.entities = s.entities.filter((e) => !e.isDestroyed);
 
+}
+
+function nearPlayer(e, dist) {
+    dist = dist || 20;
+    const s = getScene();
+    return Math.abs(e.x - s.player.x) < 20 && Math.abs(e.y - s.player.y) < dist
 }
 
 function createExplosion(s, x, y) {
@@ -302,25 +333,61 @@ function addEntity(s, x, y, code) {
 
     const codeMap = {
         guest: "😆😱😀😅😎☺️😮😴😭😇",
-        enemy: "😈😡🤬💩",
-        sadGuest: "😢😥😨😣😪😫😓😩"
+        enemy: "😈😡🤬",
+        sadGuest: "😢😥😨😣😪😫😓😩",
+        shit: "💩",
     }
 
     const arrayEmojis = Array.from(codeMap[code]);
     const eText = arrayEmojis[Math.floor(Math.random() * arrayEmojis.length)];
 
-    const e = s.add.text(x, y, eText, {
-        font: '48px Arial',
-        fill: '#ffffff'
-    }).setOrigin(0.5);
-    e.code = code;
+    let e = null;
 
-    e.dir = Math.random() * Math.PI * 2;
-    e.speed = Math.random() * 1 + 0.5;
+    if (["guest", "sadGuest", "enemy"].includes(code)) {
+
+        e = s.add.text(x, y, eText, {
+            font: '48px Arial',
+            fill: '#ffffff'
+        }).setOrigin(0.5);
+        e.dir = Math.random() * Math.PI * 2;
+        e.speed = Math.random() * 1 + 0.5;
+
+    } else if (code == "shit") {
+
+        e = s.add.container(x, y);
+        const c1 = s.add.container(0, 0);
+        e.add(c1);
+        const c2 = s.add.container(0, 0);
+        c1.add(c2);
+        const tIcon = s.add.text(0, 0, eText, {
+            font: '48px Arial',
+            fill: '#ffffff'
+        }).setOrigin(0.5);
+        e.add(tIcon);
+        // e.dir = Math.random() * Math.PI * 2;
+        // e.speed = Math.random() * 1 + 0.5;
+        for (let i = 0; i < 4; i++) {
+            const angle = Math.PI / 2 * i;
+            const x = Math.cos(angle) * 40;
+            const y = Math.sin(angle) * 40;
+            const circle = s.add.circle(x, y, 4, 0xff0000);
+            c2.add(circle);
+        }
+        const t = s.time.addEvent({
+            delay: 30,
+            callback: () => {
+                c2.angle += 5;
+            },
+            loop: true,
+        });
+        e.timedEvents = [t];
+    }
+
+    e.code = code;
+    s.entities.push(e);
 
     return e;
 }
-
 
 function checkBorders(s, player) {
 
