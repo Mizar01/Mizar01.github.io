@@ -187,6 +187,27 @@ function fireWithAutoTimedText1(text, ratio = 300) {
     }
 }
 
+function fireWithManualText1(text) {
+
+    createPhaserGame(_create);
+
+    function _create() {
+
+        let scene = getScene();
+
+        setBgColor("#000000");
+
+        createFireEffect({
+            percX: 50,
+            percY: 85,
+            initialScale: 8,
+        });
+
+        manualBrowseTexts(text);
+        
+    }
+}
+
 function snowFlakesWithAutoTimedText1(snowFlakeText, text, {
     ratio = 150,
     name = "flakes",
@@ -209,8 +230,68 @@ function snowFlakesWithAutoTimedText1(snowFlakeText, text, {
     
     }
 
-    
+}
 
+function snowFlakesWithManualText1(snowFlakeText, text, {
+    name = "flakes",
+    font = "24px Arial",
+    fill = "#ffaa00",
+    preloadFn = null,
+    afterCreate = null,
+} = {}) {
+    createPhaserGame(_create, null, preloadFn);
+
+    function _create() {
+    
+        setBgColor("#000000");
+    
+        createTextSnowFlakes(snowFlakeText, { name: name, font: font, fill: fill });
+    
+        manualBrowseTexts(text);
+
+        afterCreate && afterCreate(this);
+    
+    }
+
+}
+
+function moonText1(text) {
+
+    function preloadFn() {
+        // Load moon image
+        this.load.image('moon', '/assets/img/moon.png');
+    }
+    
+    function afterCreate(scene) {
+    
+        const { width, height } = scene.sys.game.canvas;
+        // Add moon image attached to a container
+        const moonContainer = scene.add.container(width / 2, height + 200);
+        const img = scene.add.image(0, - height / 6 * 5, 'moon');
+        moonContainer.add(img);
+        //img.setScale(0.5);
+        moonContainer.setDepth(-100);
+        moonContainer.setAlpha(0.5);
+        moonContainer.setAngle(-50);
+    
+        scene.time.addEvent({
+            delay: 50,
+            callback: () => {
+               moonContainer.setAngle(moonContainer.angle + 0.05);
+            },
+            loop: true,
+        });
+        
+    
+        
+    }
+    
+    snowFlakesWithAutoTimedText1(".", text, {
+        ratio: 400, 
+        fill: "#ffffff",
+        preloadFn: preloadFn,
+        afterCreate: afterCreate,
+    });
 }
 
 function _text1(testo) {

@@ -479,3 +479,35 @@ function autoTimedTexts(text, waitChar=100) {
     });
     createTimedTexts(texts);
 }
+
+function manualBrowseTexts(text) {
+    
+    const texts = text.split('\n').map(t => t.trim()).filter(t => t.length > 0);
+    const s = getScene();
+    s.texts = texts;
+    s.text = createText(s.texts[0], {
+        color: '#ffffff',
+        customProps: {
+            percX: 50, percY: 50,
+        }
+    }).setOrigin(0.5);
+    s.textIdx = 1;
+
+    // Add a button to start the next text browsing
+    const b = createTextButton('>>', {
+        x: getBodySize().width / 2,
+        y: getBodySize().height - 150,
+        onClick: () => {
+            if (s.textIdx >= s.texts.length) {
+                s.text.text = '';
+                b.destroy();
+                return;
+            }
+            s.text.text = s.texts[s.textIdx];
+            s.text.setOrigin(0.5);
+            s.textIdx++;
+        },
+        fontSize: '32px',
+    });
+    
+}
