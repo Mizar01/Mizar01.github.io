@@ -38,6 +38,10 @@ const tagsPerDay = [
     {date: "2025-03-31", tags: ["detti"]},
     {date: "2025-04-01", tags: ["movies"]},
     {date: "2025-04-07", tags: ["adv"]},
+    {date: "2025-04-08", tags: ["wedding"]},
     {date: "2025-04-09", tags: ["shamana"]},
+    {date: "2025-04-13", tags: ["shorts"]},
+    {date: "2025-04-15", tags: ["humour"]},
+
     
 ]
