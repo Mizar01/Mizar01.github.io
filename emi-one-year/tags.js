@@ -31,7 +31,7 @@ const tagsPerDay = [
     {date: "2025-03-09", tags: ["shamana"]},
     {date: "2025-03-13", tags: ["shorts"]},
     {date: "2025-03-15", tags: ["humour"]},
-    {date: "2025-03-18", tags: ["wedding"]},
+    {date: "2025-03-18", tags: ["games"]},
     {date: "2025-03-21", tags: ["songs"]},
     {date: "2025-03-22", tags: ["quiz"]},
     {date: "2025-03-23", tags: ["strufi"]},
@@ -42,6 +42,8 @@ const tagsPerDay = [
     {date: "2025-04-09", tags: ["shamana"]},
     {date: "2025-04-13", tags: ["shorts"]},
     {date: "2025-04-15", tags: ["humour"]},
+    {date: "2025-04-18", tags: ["games"]},
+    {date: "2025-04-22", tags: ["quiz"]},
 
     
 ]

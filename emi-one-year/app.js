@@ -193,7 +193,7 @@ function createBackButton() {
     const backButton = document.createElement("button");
     backButton.id = "back-button";
     backButton.textContent = "back";
-    backButton.style.position = "absolute";
+    backButton.style.position = "fixed";
     backButton.style.top = `${height - 120}px`;
     backButton.style.left = `${width - 90}px`;
     backButton.addEventListener("click", () => {

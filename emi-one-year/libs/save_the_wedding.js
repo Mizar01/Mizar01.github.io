@@ -7,6 +7,7 @@ const defaultGameCfg = {
     enemies: 4,
     sadGuests: 0,
     shits: 0,
+    movingShits: false,
     time: 60,
     title: "Save the Wedding",
     level: 1,
@@ -254,23 +255,7 @@ function updateEntities(s) {
     s.entities.forEach((e) => {
 
         if (["guest", "enemy", "sadGuest"].includes(e.code)) {
-            const outOfBounds = e.x < minX || e.x > maxX || e.y < minY || e.y > maxY;
-            const changeDir = Math.random() < 0.01;
-            if (changeDir) {
-            e.dir = Math.random() * Math.PI * 2;
-            }
-            if (outOfBounds) {
-            e.dir += Math.PI;
-            }
-            let newX = e.x + Math.cos(e.dir) * e.speed;
-            let newY = e.y + Math.sin(e.dir) * e.speed;
-            if (newX < minX) newX = minX;
-            if (newX > maxX) newX = maxX;
-            if (newY < minY) newY = minY;
-            if (newY > maxY) newY = maxY;
-            e.x = newX;
-            e.y = newY;
-
+            moveEntity(s, e);
             if (e.code === "enemy") {
                 if (nearPlayer(e)) {
                     e.destroy();
@@ -288,6 +273,9 @@ function updateEntities(s) {
                 }
             }
         } else if (e.code === "shit") {
+            if (gameCfg.movingShits) {
+                moveEntity(s, e);
+            }
             if (nearPlayer(e, 40)) {
                 e.timedEvents.forEach((evt) => evt.remove());
                 e.destroy();
@@ -299,6 +287,31 @@ function updateEntities(s) {
 
      });
      s.entities = s.entities.filter((e) => !e.isDestroyed);
+
+}
+
+function moveEntity(s, e) {
+
+    const minX = s.borders.x1;
+    const minY = s.borders.y1;
+    const maxX = s.borders.x2;
+    const maxY = s.borders.y2;
+    const outOfBounds = e.x < minX || e.x > maxX || e.y < minY || e.y > maxY;
+    const changeDir = Math.random() < 0.01;
+    if (changeDir) {
+    e.dir = Math.random() * Math.PI * 2;
+    }
+    if (outOfBounds) {
+    e.dir += Math.PI;
+    }
+    let newX = e.x + Math.cos(e.dir) * e.speed;
+    let newY = e.y + Math.sin(e.dir) * e.speed;
+    if (newX < minX) newX = minX;
+    if (newX > maxX) newX = maxX;
+    if (newY < minY) newY = minY;
+    if (newY > maxY) newY = maxY;
+    e.x = newX;
+    e.y = newY;
 
 }
 
@@ -381,6 +394,8 @@ function addEntity(s, x, y, code) {
             loop: true,
         });
         e.timedEvents = [t];
+        e.dir = Math.random() * Math.PI * 2;
+        e.speed = Math.random() * 1 + 0.5;
     }
 
     e.code = code;
