@@ -35,6 +35,7 @@ const tagsPerDay = [
     {date: "2025-03-21", tags: ["songs"]},
     {date: "2025-03-22", tags: ["quiz"]},
     {date: "2025-03-23", tags: ["strufi"]},
+    {date: "2025-03-26", tags: ["humour"]},
     {date: "2025-03-31", tags: ["detti"]},
     {date: "2025-04-01", tags: ["movies"]},
     {date: "2025-04-07", tags: ["adv"]},
@@ -44,6 +45,8 @@ const tagsPerDay = [
     {date: "2025-04-15", tags: ["humour"]},
     {date: "2025-04-18", tags: ["games"]},
     {date: "2025-04-22", tags: ["quiz"]},
+    {date: "2025-04-23", tags: ["strufi"]},
+    {date: "2025-04-26", tags: ["humour"]},
 
     
 ]
