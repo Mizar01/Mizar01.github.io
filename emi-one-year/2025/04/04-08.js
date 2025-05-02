@@ -23,7 +23,7 @@ function _create() {
         Se qualcuno deve restare a sera,
         Il comodo letto a soffietto sul soffitto del camper è a vostra disposizione.
         Vi aspettiamo.
-        PS. È consgigliato l'uso dei servizi igenici del campeggio
+        PS. È scongigliato l'uso dei servizi igenici del campeggio
         onde evitare cattivi odori in zona ristorante.
     `, 170)
 
