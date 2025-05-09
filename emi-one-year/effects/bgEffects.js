@@ -417,7 +417,22 @@ function createPlayMusicButton(audio, percX, percY) {
         },
     });
 
+    return playButton;
+
 }
+
+function createLinkButton(text, url, percX, percY) {
+    var button = createTextButton(text, {
+        x: getBodySize().width / 100 * percX,
+        y: getBodySize().height / 100 * percY,
+        onClick: () => {
+            window.location.href = url;
+        },
+    });
+
+    return button;
+}
+
 
 function setBgColor(color) {
     getScene().cameras.main.setBackgroundColor(color);

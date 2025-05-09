@@ -8,6 +8,7 @@ const defaultGameCfg = {
     sadGuests: 0,
     shits: 0,
     movingShits: false,
+    sadGuestResolveMode: "byTouch", // byTouch, bySweet
     time: 60,
     title: "Save the Wedding",
     level: 1,
@@ -71,6 +72,11 @@ function _create() {
         addEntityInRandomPoint(this, "shit");
     }
 
+    // Add random sweets
+    for (let i = 0; i < gameCfg.sweets; i++) {
+        addEntityInRandomPoint(this, "sweet");
+    }
+
     // Debug on player position
     // this.time.addEvent({
     //     delay: 1000,
@@ -81,6 +87,8 @@ function _create() {
     // });
 
     this.timeInSeconds = gameCfg.time;
+
+    this.ownSweets = 0;
 
     this.dashboard = createDashboard(this);
 
@@ -184,10 +192,13 @@ function createDashboard(s) {
 function updateDashboard() {
     const s = getScene();
     s.dashboard.timer.setText("TIME: " + s.timeInSeconds);
-    s.dashboard.targetCounter.setText(
-        "😈: " + s.entities.filter((e) => e.code === "enemy").length + "  " + 
-        "😢: " + s.entities.filter((e) => e.code === "sadGuest").length
-    );
+    let t = "😈: " + s.entities.filter((e) => e.code === "enemy").length 
+        + "  " + 
+        "😢: " + s.entities.filter((e) => e.code === "sadGuest").length 
+    if (gameCfg.sadGuestResolveMode === "bySweet") {
+        t += "  " + "🍰: " + s.ownSweets;
+    }
+    s.dashboard.targetCounter.setText(t);
 }
 
 
@@ -267,9 +278,19 @@ function updateEntities(s) {
 
             if (e.code === "sadGuest") {
                 if (nearPlayer(e)) {
-                    e.text = "😀";
-                    e.code = "guest";
-                    getScene().timeInSeconds += 10;
+                    if (gameCfg.sadGuestResolveMode === "byTouch") {
+                        e.text = "😀";
+                        e.code = "guest";
+                        getScene().timeInSeconds += 10;
+                    } else if (gameCfg.sadGuestResolveMode === "bySweet") {
+                        if (s.ownSweets > 0) {
+                            e.text = "😀";
+                            e.code = "guest";
+                            s.ownSweets -= 1;
+                            updateDashboard();
+                            getScene().timeInSeconds += 10;
+                        }
+                    }
                 }
             }
         } else if (e.code === "shit") {
@@ -282,6 +303,13 @@ function updateEntities(s) {
                 e.isDestroyed = true;
                 createExplosion(s, e.x, e.y);
                 getScene().timeInSeconds -= 30;
+            }
+        } else if (e.code === "sweet") {
+            if (nearPlayer(e, 40)) {
+                e.destroy();
+                e.isDestroyed = true;
+                s.ownSweets = (s.ownSweets) + 1;
+                updateDashboard();
             }
         }
 
@@ -349,6 +377,7 @@ function addEntity(s, x, y, code) {
         enemy: "😈😡🤬",
         sadGuest: "😢😥😨😣😪😫😓😩",
         shit: "💩",
+        sweet: "🍓🍉🍍🍪🍨🍬🍰",
     }
 
     const arrayEmojis = Array.from(codeMap[code]);
@@ -356,7 +385,7 @@ function addEntity(s, x, y, code) {
 
     let e = null;
 
-    if (["guest", "sadGuest", "enemy"].includes(code)) {
+    if (["guest", "sadGuest", "enemy", "sweet"].includes(code)) {
 
         e = s.add.text(x, y, eText, {
             font: '48px Arial',

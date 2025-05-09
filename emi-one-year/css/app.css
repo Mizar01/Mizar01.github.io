@@ -122,4 +122,7 @@ button.movies {
     border: 8px dashed gray;
 }
 
+button.useless_websites {
+    border: 8px dashed green;
+}
 

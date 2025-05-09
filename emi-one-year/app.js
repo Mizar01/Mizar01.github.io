@@ -1,5 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 
+const folderTestFile = "2025/05";
+
 // Lock screen orientation to portrait
 if (screen.orientation && screen.orientation.lock) {
     screen.orientation.lock('portrait')
@@ -108,7 +110,7 @@ async function init() {
     let dbData;
 
     let dayFile = `${year}/${m}/${md}.js`; 
-    let testFile = `2025/04/test.js`;
+    let testFile = `${folderTestFile}/test.js`;
 
     // Order of precedence: test.js > test from db > day.js > day from db > fallback.js
 
