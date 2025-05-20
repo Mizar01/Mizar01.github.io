@@ -52,6 +52,7 @@ const tagsPerDay = [
     {date: "2025-05-13", tags: ["useless_websites"]},
     {date: "2025-05-18", tags: ["games"]},
     {date: "2025-05-22", tags: ["quiz"]},
+    {date: "2025-05-23", tags: ["shamana"]},
 
     
 
