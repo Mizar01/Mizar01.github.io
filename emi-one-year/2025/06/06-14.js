@@ -1,0 +1,3 @@
+floatingHeartsWithAutoTimedText1(`
+
+`, 150)
