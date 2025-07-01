@@ -2,7 +2,7 @@ snowFlakesWithAutoTimedText1("🎬", `
     I MIGLIORI FILM SOLO PER TE**
     *
     TRAILER 1**
-    Un uomo incontra una donna, l'amore sembra sbocciare, le labbra si incontrano,
+    L'affascinante Enrico incontra una donna, l'amore sembra sbocciare, le labbra si incontrano,
     ma la cena di quella sera provocò qualcosa di inaspettato proprio in quel momento.
     *
     Non perdetevi "Pensavo fosse amore, invece era uno squaraus"**
